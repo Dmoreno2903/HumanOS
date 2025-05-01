@@ -1,0 +1,31 @@
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=humanos_db
+      - POSTGRES_USER=humanos_user
+      - POSTGRES_PASSWORD=humanos_password
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_NAME=humanos_db
+      - POSTGRES_USER=humanos_user
+      - POSTGRES_PASSWORD=humanos_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+
+volumes:
+  postgres_data:
