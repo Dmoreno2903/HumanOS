@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!3srw3vs!2dy5t($327**t+bx==jdco(vgto7-h4zbietseu9j'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'humanos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME', 'humanos_db'),
+        'NAME': os.environ.get('POSTGRES_DB', 'humanos_db'),
         'USER': os.environ.get('POSTGRES_USER', 'humanos_user'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'humanos_password'),
         'HOST': os.environ.get('POSTGRES_HOST', 'db'),
