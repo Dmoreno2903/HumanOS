@@ -8,11 +8,10 @@ ENV PYTHONUNBUFFERED 1
 # Establece el directorio de trabajo
 WORKDIR /app
 
-# Instala uv
+# Instala las dependencias directamente con pip para asegurar su funcionamiento
 RUN pip install uv
 
 # Copia el código de la aplicación
 COPY . /app/
 
-# Instala dependencias usando uv
-RUN uv sync
+RUN uv add -r requirements.txt
