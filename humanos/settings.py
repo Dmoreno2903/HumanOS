@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,11 +43,19 @@ INTERNAL_APPS = [
     'django.contrib.staticfiles'
 ]
 
-EXTERNAL_APPS = [
-    'rest_framework',
+# Bussiness Apps
+BUSINESS_APPS = [
+    'common',
+    'people',
+    'documents_renderer',
 ]
 
-INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS
+EXTERNAL_APPS = [
+    'rest_framework',
+    'django_extensions'
+]
+
+INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS + BUSINESS_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,3 +143,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django Extensions config
+SHELL_PLUS = "bpython"
