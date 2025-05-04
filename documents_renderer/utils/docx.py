@@ -17,11 +17,11 @@ class Renderer:
         """
         Render the docx template with the provided context.
         """
-        temp_dir = '/media/temp/'
+        temp_dir = "/media/temp/"
         os.makedirs(temp_dir, exist_ok=True)
 
-        self.pdf_doc_path = f'{temp_dir}{str(uuid.uuid4())}.pdf'
-        self.docx_rendered_path = f'{temp_dir}{str(uuid.uuid4())}.docx'
+        self.pdf_doc_path = f"{temp_dir}{str(uuid.uuid4())}.pdf"
+        self.docx_rendered_path = f"{temp_dir}{str(uuid.uuid4())}.docx"
 
         # Implement the rendering logic here
         docx = DocxTemplate(self.docx_template.file.path)

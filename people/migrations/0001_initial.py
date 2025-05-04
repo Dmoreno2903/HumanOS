@@ -10,98 +10,419 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Company',
+            name="Company",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('name', models.CharField(help_text='Enter the name of the company', max_length=255, unique=True, verbose_name='Company Name')),
-                ('address', models.TextField(blank=True, help_text='Enter the address of the company', null=True, verbose_name='Company Address')),
-                ('city', models.CharField(blank=True, help_text='Enter the city of the company', max_length=255, null=True, verbose_name='Company City')),
-                ('logo', models.ImageField(blank=True, help_text='Upload the logo of the company', null=True, upload_to='company_logos/', verbose_name='Company Logo')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, verbose_name="modified"
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Enter the name of the company",
+                        max_length=255,
+                        unique=True,
+                        verbose_name="Company Name",
+                    ),
+                ),
+                (
+                    "address",
+                    models.TextField(
+                        blank=True,
+                        help_text="Enter the address of the company",
+                        null=True,
+                        verbose_name="Company Address",
+                    ),
+                ),
+                (
+                    "city",
+                    models.CharField(
+                        blank=True,
+                        help_text="Enter the city of the company",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Company City",
+                    ),
+                ),
+                (
+                    "logo",
+                    models.ImageField(
+                        blank=True,
+                        help_text="Upload the logo of the company",
+                        null=True,
+                        upload_to="company_logos/",
+                        verbose_name="Company Logo",
+                    ),
+                ),
             ],
             options={
-                'get_latest_by': 'modified',
-                'abstract': False,
+                "get_latest_by": "modified",
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Role',
+            name="Role",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('name', models.CharField(max_length=255, unique=True)),
-                ('description', models.TextField(blank=True, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, verbose_name="modified"
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, unique=True)),
+                ("description", models.TextField(blank=True, null=True)),
             ],
             options={
-                'get_latest_by': 'modified',
-                'abstract': False,
+                "get_latest_by": "modified",
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Person',
+            name="Person",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('birth_date', models.DateField(blank=True, help_text='Enter the date of birth', null=True, verbose_name='Date of Birth')),
-                ('phone', models.CharField(blank=True, help_text='Enter the phone number', max_length=20, null=True, unique=True, verbose_name='Phone Number')),
-                ('address', models.TextField(blank=True, help_text='Enter the address', null=True, verbose_name='Address')),
-                ('city', models.CharField(blank=True, help_text='Enter the city', max_length=255, null=True, verbose_name='City')),
-                ('gender', models.CharField(choices=[('male', 'Male'), ('female', 'Female')], help_text='Select the gender', max_length=10, verbose_name='Gender')),
-                ('picture', models.ImageField(blank=True, help_text='Upload the profile picture', null=True, upload_to='profile_pictures/', verbose_name='Profile Picture')),
-                ('national_id', models.CharField(blank=True, help_text='Enter the national ID', max_length=20, null=True, unique=True, verbose_name='National ID')),
-                ('expedition_date', models.DateField(blank=True, help_text='Enter the expedition date', null=True, verbose_name='Expedition Date')),
-                ('expedition_place', models.CharField(blank=True, help_text='Enter the expedition place', max_length=255, null=True, verbose_name='Expedition Place')),
-                ('expiration_date', models.DateField(blank=True, help_text='Enter the expiration date', null=True, verbose_name='Expiration Date')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, verbose_name="modified"
+                    ),
+                ),
+                (
+                    "birth_date",
+                    models.DateField(
+                        blank=True,
+                        help_text="Enter the date of birth",
+                        null=True,
+                        verbose_name="Date of Birth",
+                    ),
+                ),
+                (
+                    "phone",
+                    models.CharField(
+                        blank=True,
+                        help_text="Enter the phone number",
+                        max_length=20,
+                        null=True,
+                        unique=True,
+                        verbose_name="Phone Number",
+                    ),
+                ),
+                (
+                    "address",
+                    models.TextField(
+                        blank=True,
+                        help_text="Enter the address",
+                        null=True,
+                        verbose_name="Address",
+                    ),
+                ),
+                (
+                    "city",
+                    models.CharField(
+                        blank=True,
+                        help_text="Enter the city",
+                        max_length=255,
+                        null=True,
+                        verbose_name="City",
+                    ),
+                ),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("male", "Male"), ("female", "Female")],
+                        help_text="Select the gender",
+                        max_length=10,
+                        verbose_name="Gender",
+                    ),
+                ),
+                (
+                    "picture",
+                    models.ImageField(
+                        blank=True,
+                        help_text="Upload the profile picture",
+                        null=True,
+                        upload_to="profile_pictures/",
+                        verbose_name="Profile Picture",
+                    ),
+                ),
+                (
+                    "national_id",
+                    models.CharField(
+                        blank=True,
+                        help_text="Enter the national ID",
+                        max_length=20,
+                        null=True,
+                        unique=True,
+                        verbose_name="National ID",
+                    ),
+                ),
+                (
+                    "expedition_date",
+                    models.DateField(
+                        blank=True,
+                        help_text="Enter the expedition date",
+                        null=True,
+                        verbose_name="Expedition Date",
+                    ),
+                ),
+                (
+                    "expedition_place",
+                    models.CharField(
+                        blank=True,
+                        help_text="Enter the expedition place",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Expedition Place",
+                    ),
+                ),
+                (
+                    "expiration_date",
+                    models.DateField(
+                        blank=True,
+                        help_text="Enter the expiration date",
+                        null=True,
+                        verbose_name="Expiration Date",
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonCompany',
+            name="PersonCompany",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('start_date', models.DateField(help_text='Enter the start date', verbose_name='Start Date')),
-                ('end_date', models.DateField(blank=True, help_text='Enter the end date', null=True, verbose_name='End Date')),
-                ('status', models.CharField(choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active', help_text='Select the status', max_length=10, verbose_name='Status')),
-                ('company', models.ForeignKey(help_text='Select the company', on_delete=django.db.models.deletion.CASCADE, related_name='people', to='people.company', verbose_name='Company')),
-                ('person', models.ForeignKey(help_text='Select the person', on_delete=django.db.models.deletion.CASCADE, related_name='companies', to=settings.AUTH_USER_MODEL, verbose_name='Person')),
-                ('role', models.ForeignKey(help_text='Select the role', on_delete=django.db.models.deletion.CASCADE, related_name='person_companies', to='people.role', verbose_name='Role')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, verbose_name="modified"
+                    ),
+                ),
+                (
+                    "start_date",
+                    models.DateField(
+                        help_text="Enter the start date", verbose_name="Start Date"
+                    ),
+                ),
+                (
+                    "end_date",
+                    models.DateField(
+                        blank=True,
+                        help_text="Enter the end date",
+                        null=True,
+                        verbose_name="End Date",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("active", "Active"), ("inactive", "Inactive")],
+                        default="active",
+                        help_text="Select the status",
+                        max_length=10,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "company",
+                    models.ForeignKey(
+                        help_text="Select the company",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="people",
+                        to="people.company",
+                        verbose_name="Company",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        help_text="Select the person",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="companies",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Person",
+                    ),
+                ),
+                (
+                    "role",
+                    models.ForeignKey(
+                        help_text="Select the role",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="person_companies",
+                        to="people.role",
+                        verbose_name="Role",
+                    ),
+                ),
             ],
             options={
-                'get_latest_by': 'modified',
-                'abstract': False,
+                "get_latest_by": "modified",
+                "abstract": False,
             },
         ),
     ]

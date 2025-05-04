@@ -1,5 +1,3 @@
-
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Company, Person, PersonCompany, Role
@@ -20,7 +18,19 @@ class PersonAdmin(UserAdmin):
     search_fields = ("username", "first_name", "last_name", "email", "phone")
     fieldsets = UserAdmin.fieldsets + (
         ("General", {"fields": ("birth_date", "phone", "address", "city")}),
-        ("Identificatión", {"fields": ("gender", "picture", "national_id", "expedition_date", "expedition_place", "expiration_date")}),
+        (
+            "Identificatión",
+            {
+                "fields": (
+                    "gender",
+                    "picture",
+                    "national_id",
+                    "expedition_date",
+                    "expedition_place",
+                    "expiration_date",
+                )
+            },
+        ),
     )
 
 
