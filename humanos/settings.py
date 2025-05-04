@@ -45,7 +45,7 @@ INTERNAL_APPS = [
 
 EXTERNAL_APPS = ["rest_framework", "django_extensions"]
 
-BUSINESS_APPS = ["people"]
+BUSINESS_APPS = ["people", "work_us"]
 
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS + BUSINESS_APPS
 
@@ -138,3 +138,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
