@@ -46,7 +46,10 @@ class CandidateSerializer(serializers.ModelSerializer):
         )
 
         response = agent.llm_analysis()
-        print(response, flush=True)
+        if "error" in response:
+            raise serializers.ValidationError(
+                {"error": response["error"], "message": response["message"]}
+            )
 
         # Actualizamos los datos validados con la información extraída
         validated_data.update(

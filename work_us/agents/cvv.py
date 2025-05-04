@@ -7,6 +7,7 @@ import google.generativeai as genai
 from typing import Optional
 from pydantic import Field
 from pydantic.dataclasses import dataclass
+from django.conf import settings
 
 
 @dataclass
@@ -47,14 +48,12 @@ class ExtractInfoCVVAgent:
             )
 
     def verify_response(self, response_text: str) -> dict:
-        """ Verify if the response is a valid JSON object with required fields.
-        """
+        """Verify if the response is a valid JSON object with required fields."""
         clean_text = re.sub(r"```json\s*|\s*```", "", response_text).strip()
 
         try:
             json_data = json.loads(clean_text)
-
-            required_fields = [
+            for field in [
                 "name",
                 "phone",
                 "email",
@@ -62,12 +61,11 @@ class ExtractInfoCVVAgent:
                 "resume",
                 "stars",
                 "comments",
-            ]
-            for field in required_fields:
+            ]:
                 if field not in json_data:
                     raise ValueError(f"Missing required field: {field}")
 
-            # Validación específica de tipo
+            # Validate the 'stars' field
             if not isinstance(json_data["stars"], int) or not (
                 1 <= json_data["stars"] <= 5
             ):
@@ -76,12 +74,7 @@ class ExtractInfoCVVAgent:
             return json_data
 
         except (json.JSONDecodeError, ValueError) as e:
-            return {
-                "error": "Invalid LLM response",
-                "message": str(e),
-                "raw_response": response_text,
-                "clean_text": clean_text,
-            }
+            return {"error": "Invalid JSON response", "message": str(e)}
 
     def llm_analysis(self) -> str:
         """Analyze the extracted text using the Generative AI"""
@@ -118,7 +111,7 @@ class ExtractInfoCVVAgent:
             {self.content}
         """
 
-        genai.configure(api_key="AIzaSyA_WhyI3fq6NNUAc2DyAwn-OlnF3c3SZgo")
+        genai.configure(api_key=settings.GOOGLE_API_KEY)
         model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
         # Generate a response
