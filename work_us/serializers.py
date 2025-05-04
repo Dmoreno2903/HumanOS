@@ -45,23 +45,12 @@ class CandidateSerializer(serializers.ModelSerializer):
             description_work=validated_data["vacancy"].description,
         )
 
-        response = agent.llm_analysis()
-        if "error" in response:
-            raise serializers.ValidationError(
-                {"error": response["error"], "message": response["message"]}
-            )
-
-        # Actualizamos los datos validados con la información extraída
-        validated_data.update(
-            {
-                "name": response["name"],
-                "email": response["email"],
-                "phone": response["phone"],
-                "resume": response["resume"],
-                "stars": response["stars"],
-                "comments": response["comments"],
+        try:
+            response = agent.llm_analysis()
+            validated_data.update(**response)
+            return super().create(validated_data)
+        except Exception as error:
+            return {
+                "error": str(error),
+                "message": "Error processing the CVV file",
             }
-        )
-
-        # Usamos super().create() para crear el candidato
-        return super().create(validated_data)

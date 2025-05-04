@@ -31,7 +31,11 @@ class ExtractInfoCVVAgent:
         self.content = self.extract_text(self.file_path)
 
     def extract_text(self, file_path: str) -> str:
-        """Extract text from the document."""
+        """Extract text from the document.
+
+        Args:
+            file_path (str): Path to the document file.
+        """
         ext: str = os.path.splitext(file_path)[1].lower()
 
         # Check if the file is a PDF or DOCX
@@ -47,34 +51,34 @@ class ExtractInfoCVVAgent:
                 f"Unsupported file type: {ext}. Supported types are: .pdf, .docx"
             )
 
-    def verify_response(self, response_text: str) -> dict:
-        """Verify if the response is a valid JSON object with required fields."""
+    def check_response(self, response_text: str) -> dict:
+        """Check if the response is a valid JSON object with required fields.
+
+        Args:
+            response_text (str): The response text to check.
+        """
         clean_text = re.sub(r"```json\s*|\s*```", "", response_text).strip()
+        data = json.loads(clean_text)
 
-        try:
-            json_data = json.loads(clean_text)
-            for field in [
-                "name",
-                "phone",
-                "email",
-                "id",
-                "resume",
-                "stars",
-                "comments",
-            ]:
-                if field not in json_data:
-                    raise ValueError(f"Missing required field: {field}")
+        # Check for required fields
+        required_fields = [
+            "name",
+            "phone",
+            "email",
+            "id",
+            "resume",
+            "stars",
+            "comments",
+        ]
+        for field in required_fields:
+            if field not in data:
+                raise ValueError(f"Missing required field: {field}")
 
-            # Validate the 'stars' field
-            if not isinstance(json_data["stars"], int) or not (
-                1 <= json_data["stars"] <= 5
-            ):
-                raise ValueError("'stars' must be an integer between 1 and 5")
+        # Check for valid 'stars' field
+        if not isinstance(data["stars"], int) or not (1 <= data["stars"] <= 5):
+            raise ValueError("'stars' must be an integer between 1 and 5")
 
-            return json_data
-
-        except (json.JSONDecodeError, ValueError) as e:
-            return {"error": "Invalid JSON response", "message": str(e)}
+        return data
 
     def llm_analysis(self) -> str:
         """Analyze the extracted text using the Generative AI"""
@@ -117,4 +121,4 @@ class ExtractInfoCVVAgent:
         # Generate a response
         response = model.generate_content(prompt)
         text = response.text.strip()
-        return self.verify_response(response_text=text)
+        return self.check_response(response_text=text)
