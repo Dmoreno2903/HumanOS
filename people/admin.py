@@ -1,5 +1,7 @@
-from django.contrib import admin
 
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from .models import Company, Person, PersonCompany, Role
 
 
@@ -12,59 +14,13 @@ class CompanyAdmin(admin.ModelAdmin):
 
 # Registrando el modelo Person
 @admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
+class PersonAdmin(UserAdmin):
     list_display = ("username", "first_name", "last_name", "email", "phone", "city")
-    search_fields = (
-        "username",
-        "first_name",
-        "last_name",
-        "email",
-        "phone",
-        "national_id",
-    )
     list_filter = ("gender", "is_staff", "is_active")
-    fieldsets = (
-        (
-            "Información Personal",
-            {
-                "fields": (
-                    "username",
-                    "password",
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "phone",
-                    "birth_date",
-                    "gender",
-                    "picture",
-                )
-            },
-        ),
-        ("Dirección", {"fields": ("address", "city")}),
-        (
-            "Identificación Nacional",
-            {
-                "fields": (
-                    "national_id",
-                    "expedition_date",
-                    "expedition_place",
-                    "expiration_date",
-                )
-            },
-        ),
-        (
-            "Permisos",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        ("Fechas importantes", {"fields": ("last_login", "date_joined")}),
+    search_fields = ("username", "first_name", "last_name", "email", "phone")
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {"fields": ("birth_date", "phone", "address", "city")}),
+        ("ID", {"fields": ("gender", "picture", "national_id", "expedition_date", "expedition_place", "expiration_date")}),
     )
 
 
