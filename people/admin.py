@@ -19,8 +19,8 @@ class PersonAdmin(UserAdmin):
     list_filter = ("gender", "is_staff", "is_active")
     search_fields = ("username", "first_name", "last_name", "email", "phone")
     fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("birth_date", "phone", "address", "city")}),
-        ("ID", {"fields": ("gender", "picture", "national_id", "expedition_date", "expedition_place", "expiration_date")}),
+        ("General", {"fields": ("birth_date", "phone", "address", "city")}),
+        ("Identificatión", {"fields": ("gender", "picture", "national_id", "expedition_date", "expedition_place", "expiration_date")}),
     )
 
 
