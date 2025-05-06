@@ -45,7 +45,7 @@ INTERNAL_APPS = [
 
 EXTERNAL_APPS = ["rest_framework", "django_extensions"]
 
-BUSINESS_APPS = ["people", "work_us"]
+BUSINESS_APPS = ["people", "work_us", "doc_gen"]
 
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS + BUSINESS_APPS
 
