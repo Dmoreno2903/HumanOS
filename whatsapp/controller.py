@@ -1,4 +1,4 @@
-from people import models as people_models
+from people import models as pple_models
 from whatsapp.utils import api as whatsapp_api
 from rest_framework import status, response
 
@@ -35,7 +35,7 @@ class WhatsAppController:
         except Exception as e:
             print(f"Error parsing WhatsApp message data: {e}")
 
-    def get_person(self) -> people_models.Person:
+    def get_person(self) -> pple_models.Person:
         """
         Get the user information from the message data.
         """
@@ -44,8 +44,8 @@ class WhatsAppController:
             return None
 
         try:
-            people_obj = people_models.Person.objects.get(phone=self.phone)
-        except people_models.Person.DoesNotExist:
+            people_obj = pple_models.Person.objects.get(phone=self.phone)
+        except pple_models.Person.DoesNotExist:
             print(f"User with phone {self.phone} does not exist.")
             return None
 

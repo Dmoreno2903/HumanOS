@@ -1,6 +1,6 @@
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from people import models as ple_models
+from people import models as pple_models
 from django.contrib.postgres.fields import ArrayField
 
 
@@ -28,7 +28,7 @@ class WorkUsModel(TimeStampedModel):
         verbose_name="Salary of the vacancy", help_text="Salary of the vacancy"
     )
     company = models.ForeignKey(
-        ple_models.Company,
+        pple_models.Company,
         on_delete=models.DO_NOTHING,
         verbose_name="Company",
         help_text="Company that offers the vacancy",
