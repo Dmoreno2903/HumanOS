@@ -25,6 +25,8 @@ urlpatterns = [
     path("auth/", include("dj_rest_auth.urls")),
     # API's applications
     path("api-work_us/", include("work_us.urls")),
+    path("api/work_us/", include("work_us.urls")),
+    path("api/whatsapp/", include("whatsapp.urls")),
 ]
 
 # Configuración para servir archivos estáticos y media en desarrollo
