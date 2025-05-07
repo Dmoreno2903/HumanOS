@@ -48,14 +48,14 @@ class WhatsAppController:
         except people_models.Person.DoesNotExist:
             print(f"User with phone {self.phone} does not exist.")
             return None
-        
+
         print(f"User found: {people_obj}")
         return people_obj
 
     def say_hello(self):
         self.whatsapp_api.send_message(
             to=self.phone,
-            message="Hello! This is a test message from the WhatsApp API."
+            message="Hello! This is a test message from the WhatsApp API.",
         )
 
         return response.Response(status=status.HTTP_200_OK)

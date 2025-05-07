@@ -83,10 +83,13 @@ class WhatsAppWebhookSerializer(serializers.Serializer):
 
         if not self.person_obj or not self.person_obj.is_active:
             raise serializers.ValidationError(
-                {"error": "User not found or inactive", "status": status.HTTP_403_FORBIDDEN}
+                {
+                    "error": "User not found or inactive",
+                    "status": status.HTTP_403_FORBIDDEN,
+                }
             )
-        
+
         return attrs
-    
+
     def create(self, validated_data):
         return self.controller.say_hello()
