@@ -1,6 +1,6 @@
 from people import models as people_models
 from whatsapp.utils import api as whatsapp_api
-from rest_framework import status, response, views
+from rest_framework import status, response
 
 
 class WhatsAppController:
