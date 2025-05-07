@@ -1,4 +1,3 @@
-import tempfile
 from rest_framework import serializers
 from work_us import models as wk_models
 from work_us.utils import files as wk_utils_files

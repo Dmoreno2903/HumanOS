@@ -22,7 +22,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/work_us/", include("work_us.urls")),
+    path("auth/", include("dj_rest_auth.urls")),
+    # API's applications
+    path("api-work_us/", include("work_us.urls")),
 ]
 
 # Configuración para servir archivos estáticos y media en desarrollo

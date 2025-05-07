@@ -114,6 +114,13 @@ class Person(AbstractUser, TimeStampedModel):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def get_company(self):
+        """Get the last company in which the person worked."""
+        try:
+            return self.companies.order_by("-created").first().company
+        except Exception:
+            return None
+
 
 class Role(TimeStampedModel):
     """

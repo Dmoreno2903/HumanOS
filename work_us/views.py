@@ -12,6 +12,14 @@ class WorkUsViewSet(viewsets.ModelViewSet):
     queryset = wk_models.WorkUsModel.objects.all()
     serializer_class = wk_serializers.WorkUsSerializer
 
+    def get_queryset(self):
+        """Override the get_queryset method to filter by company"""
+        company = self.request.user.get_company()
+        if not company:
+            return wk_models.WorkUsModel.objects.none()
+
+        return wk_models.WorkUsModel.objects.filter(company=company)
+
 
 class CandidateViewSet(viewsets.ModelViewSet):
     """
@@ -21,3 +29,13 @@ class CandidateViewSet(viewsets.ModelViewSet):
 
     queryset = wk_models.CandidateModel.objects.all()
     serializer_class = wk_serializers.CandidateSerializer
+
+    def get_queryset(self):
+        """Override the get_queryset method to filter by company"""
+        company = self.request.user.get_company()
+        if not company:
+            return wk_models.CandidateModel.objects.none()
+
+        return wk_models.CandidateModel.objects.filter(
+            vacancy__company=company
+        ).distinct()

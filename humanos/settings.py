@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -24,16 +25,21 @@ load_dotenv(".env")
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5i(-k$f@1p_1+%md$!e4-tjz-bdsspx3j9)cy!s4b(42bl92_w"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", default=True)
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", default="localhost").split(",")
 
-ALLOWED_HOSTS = ["*"]
+# CORS: Configuración para controlar el acceso de otros dominios
+CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", default=False)
+CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", default=True)
+
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 
 
 # Application definition
-
 INTERNAL_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -43,7 +49,18 @@ INTERNAL_APPS = [
     "django.contrib.staticfiles",
 ]
 
-EXTERNAL_APPS = ["rest_framework", "django_extensions"]
+EXTERNAL_APPS = [
+    "allauth",
+    "allauth.account",
+    "allauth.usersessions",
+    "allauth.socialaccount",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+    "corsheaders",
+    "django_extensions",
+]
 
 BUSINESS_APPS = ["people", "work_us", "doc_gen"]
 
@@ -57,6 +74,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "humanos.urls"
@@ -64,10 +83,11 @@ ROOT_URLCONF = "humanos.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -76,9 +96,62 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
 WSGI_APPLICATION = "humanos.wsgi.application"
 AUTH_USER_MODEL = "people.Person"
 
+
+LOGIN_METHODS = {"username", "email"}
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),  # Duración del token de acceso
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # Duración del token de refresco
+    "ROTATE_REFRESH_TOKENS": True,  # Generar un nuevo refresh token al usarlo
+    "BLACKLIST_AFTER_ROTATION": True,  # Invalidar el refresh token antiguo
+    "ALGORITHM": os.environ.get(
+        "ALGORITHM"
+    ),  # Algoritmo de encriptación (HS256 por defecto)
+    "SIGNING_KEY": SECRET_KEY,  # Clave secreta para firmar los tokens
+    "AUTH_HEADER_TYPES": ("Bearer",),  # Tipo de token en el encabezado Authorization
+    "USER_ID_FIELD": os.environ.get(
+        "USER_ID_FIELD"
+    ),  # Campo del usuario que se incluye en el token
+    "USER_ID_CLAIM": os.environ.get(
+        "USER_ID_CLAIM"
+    ),  # Nombre del campo en el token JWT
+    "AUTH_TOKEN_CLASSES": (
+        "rest_framework_simplejwt.tokens.AccessToken",
+        "rest_framework_simplejwt.tokens.RefreshToken",
+    ),
+    "TOKEN_TYPE_CLAIM": os.environ.get(
+        "TOKEN_TYPE_CLAIM"
+    ),  # Nombre del campo en el token JWT
+}
+
+REST_USE_JWT = True
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": os.environ.get(
+        "JWT_AUTH_COOKIE"
+    ),  # Nombre de la cookie para el token de acceso
+    "JWT_AUTH_REFRESH_COOKIE": os.environ.get(
+        "JWT_AUTH_REFRESH_COOKIE"
+    ),  # Nombre de la cookie para el token de refresco
+    "JWT_AUTH_SAMESITE": "Lax",  # Control de SameSite para las cookies
+    "JWT_AUTH_SECURE": False,  # Marcar las cookies como seguras
+    "JWT_AUTH_HTTPONLY": False,  # Marcar las cookies como solo lectura
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

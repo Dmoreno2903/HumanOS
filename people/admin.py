@@ -48,3 +48,4 @@ class PersonCompanyAdmin(admin.ModelAdmin):
     list_filter = ("status", "role", "company")
     search_fields = ("person__first_name", "person__last_name", "company__name")
     autocomplete_fields = ("person", "company", "role")
+    raw_id_fields = ("person", "company", "role")

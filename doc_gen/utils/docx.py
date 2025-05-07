@@ -40,18 +40,25 @@ class Renderer:
 
 
 def docx_to_pdf(input_path: str):
-    """Convert DOCX to PDF using LibreOffice in headless mode"""    
+    """Convert DOCX to PDF using LibreOffice in headless mode"""
     output_path = os.path.splitext(input_path)[0] + ".pdf"
     output_dir = os.path.dirname(os.path.abspath(output_path))
     os.makedirs(output_dir, exist_ok=True)
 
     cmd = [
-        'libreoffice', '--headless', '--convert-to', 'pdf',
-        '--outdir', output_dir, input_path
+        "libreoffice",
+        "--headless",
+        "--convert-to",
+        "pdf",
+        "--outdir",
+        output_dir,
+        input_path,
     ]
 
     try:
-        process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        process = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
+        )
         print(f"Conversion completed: {process.stdout.decode().strip()}")
         return output_path
     except subprocess.CalledProcessError as e:
