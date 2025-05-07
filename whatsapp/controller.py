@@ -1,11 +1,18 @@
 from people import models as people_models
+from whatsapp.utils import api as whatsapp_api
+from rest_framework import status, response, views
 
 
 class WhatsAppController:
+    whatsapp_api = whatsapp_api.WhatsAppAPI()
+
     def __init__(self, data):
         self.data = data
         self.message_text = None
         self.phone = None
+        self.message_id = None
+        self.message_timestamp = None
+        self.message_type = None
 
         try:
             entries = data.get("entry", [])
@@ -21,6 +28,10 @@ class WhatsAppController:
                             self.message_text = text_obj.get("body")
 
                         self.phone = message_data.get("from")
+                        self.message_id = message_data.get("id")
+                        self.message_timestamp = message_data.get("timestamp")
+                        self.message_type = message_data.get("type")
+
         except Exception as e:
             print(f"Error parsing WhatsApp message data: {e}")
 
@@ -40,14 +51,11 @@ class WhatsAppController:
         
         print(f"User found: {people_obj}")
         return people_obj
-    
-    def get_message_text(self) -> str:
-        """
-        Get the message text from the message data.
-        """
-        if not self.message_text:
-            print("No message text found in the message data.")
-            return None
-        
-        print(f"Message text: {self.message_text}")
-        return self.message_text
+
+    def say_hello(self):
+        self.whatsapp_api.send_message(
+            to=self.phone,
+            message="Hello! This is a test message from the WhatsApp API."
+        )
+
+        return response.Response(status=status.HTTP_200_OK)
