@@ -25,4 +25,6 @@ dependencies = [
     "django-allauth>=65.7.0",
     "django-cors-headers>=4.7.0",
     "markdown>=3.8",
+    "fitz>=0.0.1.dev2",
+    "werkzeug>=3.1.3",
 ]

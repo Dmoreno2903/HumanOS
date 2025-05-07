@@ -1,6 +1,7 @@
 import re
 import os
-import fitz
+
+# import fitz
 import mammoth
 import json
 import google.generativeai as genai
@@ -40,16 +41,16 @@ class ExtractInfoCVVAgent:
 
         # Check if the file is a PDF or DOCX
         # TODO: Add support for other file types if needed
-        if ext == ".pdf":
-            doc = fitz.open(file_path)
-            return "\n".join([page.get_text() for page in doc])
-        elif ext == ".docx":
-            doc = mammoth.convert_to_text(open(file_path, "rb"))
-            return doc.value
-        else:
-            raise ValueError(
-                f"Unsupported file type: {ext}. Supported types are: .pdf, .docx"
-            )
+        # if ext == ".pdf":
+        #     doc = fitz.open(file_path)
+        #     return "\n".join([page.get_text() for page in doc])
+        # elif ext == ".docx":
+        #     doc = mammoth.convert_to_text(open(file_path, "rb"))
+        #     return doc.value
+        # else:
+        #     raise ValueError(
+        #         f"Unsupported file type: {ext}. Supported types are: .pdf, .docx"
+        #     )
 
     def check_response(self, response_text: str) -> dict:
         """Check if the response is a valid JSON object with required fields.
