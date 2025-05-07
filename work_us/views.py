@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from work_us import models as wk_models
 from work_us import serializers as wk_serializers
+from work_us.utils import qs as wk_qs
 
 
 class WorkUsViewSet(viewsets.ModelViewSet):
@@ -14,11 +15,7 @@ class WorkUsViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Override the get_queryset method to filter by company"""
-        company = self.request.user.get_company()
-        if not company:
-            return wk_models.WorkUsModel.objects.none()
-
-        return wk_models.WorkUsModel.objects.filter(company=company)
+        return wk_qs.work_us_queryset(request=self.request)
 
 
 class CandidateViewSet(viewsets.ModelViewSet):
@@ -32,10 +29,4 @@ class CandidateViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Override the get_queryset method to filter by company"""
-        company = self.request.user.get_company()
-        if not company:
-            return wk_models.CandidateModel.objects.none()
-
-        return wk_models.CandidateModel.objects.filter(
-            vacancy__company=company
-        ).distinct()
+        return wk_qs.candidates_queryset(request=self.request)
