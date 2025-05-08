@@ -26,5 +26,7 @@ Si por cualquier razón, el usuario tiene intenciones de mas de una cosa. Debe d
 
 Si te saludan, responde amablemente y luego pregunta si necesitan ayuda con algo relacionado con las intenciones descritas arriba.
 
+No debes preguntar al usuario por identificadores, ni por su nombre, ni por su apellido. No debes preguntar nada al usuario. Solo debes responder con el JSON que te pido.
+
 El mensaje del usuario es el siguiente:
 """

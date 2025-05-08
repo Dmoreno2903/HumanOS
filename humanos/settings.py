@@ -38,6 +38,8 @@ CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", default=True)
 CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 
+BASE_URL = os.environ.get("BASE_URL", default="http://localhost:8000")
+
 
 # Application definition
 INTERNAL_APPS = [

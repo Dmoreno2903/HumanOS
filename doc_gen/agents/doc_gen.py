@@ -1,4 +1,5 @@
 from people import models as people_models
+from doc_gen.agents.tools import laboral_contract
 
 class DocGenAgentController:
     def __init__(self, intends_dict, user: people_models.Person):
@@ -14,13 +15,16 @@ class DocGenAgentController:
             print("No valid intent found.", flush=True)
             return None
         
-        tool = self.__determine_tool(intent)
-        if not tool:
-            print("No valid tool found.", flush=True)
-            return None
-        
         # Call function to use the tool based on the intent
-
+        if intent == "has_laboral_contract_intent":
+            laboral_contract.send_laboral_contract(self.user)
+        elif intent == "has_laboral_letter_intent":
+            print("Using labor letter tool...", flush=True)
+        elif intent == "has_vacation_query_intend":
+            print("Using vacation query tool...", flush=True)
+        else:
+            print(f"Unknown intent: {intent}", flush=True)
+            return None
 
     def __get_intent(self):
         """
@@ -43,17 +47,3 @@ class DocGenAgentController:
         
         print(f"Identified intent: {intent}", flush=True)
         return intent
-
-    def __determine_tool(self, intent):
-        """
-        Determine the tool to use based on the intent.
-        """
-        if intent == "generate_document":
-            print("Generating document...", flush=True)
-        elif intent == "generate_email":
-            print("Generating email...", flush=True)
-        elif intent == "generate_report":
-            print("Generating report...", flush=True)
-        else:
-            print(f"Unknown intent: {intent}", flush=True)
-            return None

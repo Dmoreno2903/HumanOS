@@ -34,7 +34,8 @@ class UserRequestedDoc(ext_models.TimeStampedModel):
         """
         Function to upload the file to the correct path.
         """
-        return f"user_docs/{instance.user.id}/{instance.user.username}_{instance.doc_type}"
+        extension = filename.split(".")[-1]
+        return f"user_docs/{instance.user.id}/{instance.user.username}_{instance.doc_type}.{extension}"
 
     user = models.ForeignKey(
         "people.Person",
