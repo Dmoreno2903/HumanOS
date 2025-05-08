@@ -1,7 +1,10 @@
 from people import models as pple_models
 from whatsapp.utils import api as whatsapp_api
+
 # from rest_framework import status, response
 from genai.google import client as google_genai_client
+from doc_gen.agents import doc_gen as doc_gen_agent
+
 
 class WhatsAppController:
     whatsapp_api = whatsapp_api.WhatsAppAPI()
@@ -33,23 +36,23 @@ class WhatsAppController:
                         self.message_type = message_data.get("type")
 
         except Exception as e:
-            print(f"Error parsing WhatsApp message data: {e}")
+            print(f"Error parsing WhatsApp message data: {e}", flush=True)
 
     def get_person(self) -> pple_models.Person:
         """
         Get the user information from the message data.
         """
         if not self.phone:
-            print("No contact information found in the message data.")
+            print("No contact information found in the message data.", flush=True)
             return None
 
         try:
             people_obj = pple_models.Person.objects.get(phone=self.phone)
         except pple_models.Person.DoesNotExist:
-            print(f"User with phone {self.phone} does not exist.")
+            print(f"User with phone {self.phone} does not exist.", flush=True)
             return None
 
-        print(f"User found: {people_obj}")
+        print(f"User found: {people_obj}", flush=True)
         return people_obj
 
     def respond_to_message(self) -> None:
@@ -57,7 +60,7 @@ class WhatsAppController:
         Send a response message back to the user.
         """
         if not self.phone:
-            print("No contact information found in the message data.")
+            print("No contact information found in the message data.", flush=True)
             return
 
         structured_intents = google_genai_client.process_whatsapp_message_for_intents(
@@ -67,6 +70,10 @@ class WhatsAppController:
         if structured_intents.get("has_identifiable_intent"):
             response_message = structured_intents.get("response_message")
             self.whatsapp_api.send_message(self.phone, response_message)
+
+            doc_gen_agent.DocGenAgentController(
+                structured_intents, self.get_person()
+            ).use_tool()
         else:
             help_message = structured_intents.get("help_message")
             self.whatsapp_api.send_message(self.phone, help_message)

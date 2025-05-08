@@ -37,12 +37,12 @@ def process_whatsapp_message_for_intents(message: str) -> dict:
             ):
                 return response_dict
             else:
-                print(f"Invalid response schema. {response_dict}")
+                print(f"Invalid response schema. {response_dict}", flush=True)
                 return DEFAULT_ERROR_RESPONSE
         except json.JSONDecodeError as e:
-            print(f"Failed to parse JSON from response: {e}")
-            print(f"Response: {response.to_json_dict()}")
+            print(f"Failed to parse JSON from response: {e}", flush=True)
+            print(f"Response: {response.to_json_dict()}", flush=True)
             return DEFAULT_ERROR_RESPONSE
     else:
-        print(f"Response: {response.to_json_dict()}")
+        print(f"Response: {response.to_json_dict()}", flush=True)
         return DEFAULT_ERROR_RESPONSE
