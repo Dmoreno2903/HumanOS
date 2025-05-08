@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Company, Person, PersonCompany, Role
+from .models import Company, Person, PersonCompany, Role, VacationRequest
 
 
 # Registrando el modelo Company
@@ -49,3 +49,15 @@ class PersonCompanyAdmin(admin.ModelAdmin):
     search_fields = ("person__first_name", "person__last_name", "company__name")
     autocomplete_fields = ("person", "company", "role")
     raw_id_fields = ("person", "company", "role")
+
+
+# Registrando el modelo VacationRequest
+@admin.register(VacationRequest)
+class VacationRequestAdmin(admin.ModelAdmin):
+    list_display = ("person", "start_date", "end_date", "status", "days")
+    list_filter = ("status",)
+    search_fields = ("person__first_name", "person__last_name")
+    autocomplete_fields = ("person",)
+    raw_id_fields = ("person",)
+    date_hierarchy = "start_date"
+    # readonly_fields = ("days",)

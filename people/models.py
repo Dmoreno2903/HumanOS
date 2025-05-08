@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from django.utils import timezone
 
 
 class Company(TimeStampedModel):
@@ -114,12 +115,44 @@ class Person(AbstractUser, TimeStampedModel):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_company(self):
+    def get_person_company(self):
         """Get the last company in which the person worked."""
         try:
-            return self.companies.order_by("-created").first().company
+            return self.companies.order_by("-created").first()
         except Exception:
             return None
+
+    def get_company(self):
+        """Get the last company in which the person worked."""
+        person_company: PersonCompany = self.get_person_company()
+        if person_company:
+            return person_company.company
+        return None
+        
+    def get_available_vacation_days(self):
+        """
+        Calculate the available vacation days for the person in the company.
+        """
+
+        # Assuming a standard of 15 vacation days per year
+        standard_vacation_days = 15
+        company: PersonCompany = self.get_person_company()
+
+        # Calculate the number of years worked in the company
+        if company.end_date:
+            days_worked = (company.end_date - company.start_date).days
+        else:
+            days_worked = (timezone.now().date() - company.start_date).days
+
+        # Calculate the available vacation days
+        available_vacation_days = days_worked * standard_vacation_days // 360
+
+        # Get used vacation days
+        used_vacation_days = self.vacation_requests.filter(
+            status=VacationRequest.Status.APPROVED,
+        ).aggregate(models.Sum("days"))["days__sum"] or 0
+
+        return available_vacation_days - used_vacation_days
 
 
 class Role(TimeStampedModel):
@@ -181,3 +214,53 @@ class PersonCompany(TimeStampedModel):
 
     def __str__(self):
         return f"{self.person} - {self.company}"
+
+
+class VacationRequest(TimeStampedModel):
+    """
+    Model to store the vacation requests of a person.
+    """
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
+
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        related_name="vacation_requests",
+        verbose_name="Person",
+        help_text="Select the person",
+    )
+    start_date = models.DateField(
+        verbose_name="Start Date", help_text="Enter the start date"
+    )
+    end_date = models.DateField(
+        verbose_name="End Date", help_text="Enter the end date"
+    )
+    days = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Days",
+        help_text="Enter the number of days",
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+        verbose_name="Status",
+        help_text="Select the status",
+    )
+
+    def __str__(self):
+        return f"{self.person} - {self.start_date} to {self.end_date}"
+
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to calculate the number of days
+        """
+        if self.start_date and self.end_date:
+            delta = self.end_date - self.start_date
+            self.days = delta.days + 1
+        super().save(*args, **kwargs)

@@ -28,3 +28,21 @@ def send_laboral_contract(user: people_models.Person):
             user.phone,
             "No tienes un contrato laboral disponible. Por favor, contacta a tu supervisor para más información.",
         )
+
+
+def send_available_vacation_days(user: people_models.Person):
+    """
+    Get available vacation days for the user.
+    """
+    try:
+        days = user.get_available_vacation_days()
+        whatsapp.send_message(
+            user.phone,
+            f"Tienes {days} días de vacaciones disponibles.",
+        )
+    except Exception as e:
+        whatsapp.send_message(
+            user.phone,
+            "No pude obtener la información de tus vaciones. Intenta de nuevo más tarde o contacta con tu lider.",
+        )
+        print(f"Error calculating vacation days: {e}", flush=True)

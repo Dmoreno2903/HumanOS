@@ -21,7 +21,7 @@ class DocGenAgentController:
         elif intent == "has_laboral_letter_intent":
             print("Using labor letter tool...", flush=True)
         elif intent == "has_vacation_query_intend":
-            print("Using vacation query tool...", flush=True)
+            doc_gen_tools.send_available_vacation_days(self.user)
         else:
             print(f"Unknown intent: {intent}", flush=True)
             return None
