@@ -62,7 +62,7 @@ EXTERNAL_APPS = [
     "django_extensions",
 ]
 
-BUSINESS_APPS = ["people", "work_us", "doc_gen", "whatsapp"]
+BUSINESS_APPS = ["people", "work_us", "doc_gen", "whatsapp", "genai"]
 
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS + BUSINESS_APPS
 
@@ -212,7 +212,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 WHATSAPP_VERIFY_TOKEN = os.environ.get("WHATSAPP_VERIFY_TOKEN")
 WHATSAPP_API_TOKEN = os.environ.get("WHATSAPP_API_TOKEN")

@@ -1,7 +1,7 @@
 from people import models as pple_models
 from whatsapp.utils import api as whatsapp_api
-from rest_framework import status, response
-
+# from rest_framework import status, response
+from genai.google import client as google_genai_client
 
 class WhatsAppController:
     whatsapp_api = whatsapp_api.WhatsAppAPI()
@@ -52,10 +52,21 @@ class WhatsAppController:
         print(f"User found: {people_obj}")
         return people_obj
 
-    def say_hello(self):
-        self.whatsapp_api.send_message(
-            to=self.phone,
-            message="Hello! This is a test message from the WhatsApp API.",
+    def respond_to_message(self) -> None:
+        """
+        Send a response message back to the user.
+        """
+        if not self.phone:
+            print("No contact information found in the message data.")
+            return
+
+        structured_intents = google_genai_client.process_whatsapp_message_for_intents(
+            self.message_text
         )
 
-        return response.Response(status=status.HTTP_200_OK)
+        if structured_intents.get("has_identifiable_intent"):
+            response_message = structured_intents.get("response_message")
+            self.whatsapp_api.send_message(self.phone, response_message)
+        else:
+            help_message = structured_intents.get("help_message")
+            self.whatsapp_api.send_message(self.phone, help_message)

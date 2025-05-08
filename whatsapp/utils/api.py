@@ -1,4 +1,4 @@
-from requests import post
+from requests import post, Response
 
 from django.conf import settings
 
@@ -65,9 +65,9 @@ class WhatsAppAPI:
 
         return self.__format_return(response)
 
-    def __format_return(self, response):
-        response = response.json()
+    def __format_return(self, response: Response):
         success = response.status_code == 200
+        response = response.json()
 
         print(f"Success: {success} | Response: {response}")
         return success, response
