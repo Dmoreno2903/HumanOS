@@ -1,5 +1,5 @@
 from people import models as people_models
-from doc_gen.agents.tools import laboral_contract
+from doc_gen.agents import tools as doc_gen_tools
 
 class DocGenAgentController:
     def __init__(self, intends_dict, user: people_models.Person):
@@ -17,7 +17,7 @@ class DocGenAgentController:
         
         # Call function to use the tool based on the intent
         if intent == "has_laboral_contract_intent":
-            laboral_contract.send_laboral_contract(self.user)
+            doc_gen_tools.send_laboral_contract(self.user)
         elif intent == "has_laboral_letter_intent":
             print("Using labor letter tool...", flush=True)
         elif intent == "has_vacation_query_intend":
