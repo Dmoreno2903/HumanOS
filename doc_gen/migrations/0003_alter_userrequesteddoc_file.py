@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('doc_gen', '0002_userrequesteddoc'),
+        ("doc_gen", "0002_userrequesteddoc"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userrequesteddoc',
-            name='file',
+            model_name="userrequesteddoc",
+            name="file",
             field=models.FileField(upload_to=doc_gen.models.UserRequestedDoc.upload_to),
         ),
     ]

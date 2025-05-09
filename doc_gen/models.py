@@ -27,6 +27,7 @@ class UserRequestedDoc(ext_models.TimeStampedModel):
         """
         Enum for the doc types.
         """
+
         LABORAL_LETTER = "laboral_letter", "Carta Laboral"
         LABORAL_CONTRACT = "laboral_contract", "Contrato de Trabajo"
 

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('doc_gen', '0003_alter_userrequesteddoc_file'),
+        ("doc_gen", "0003_alter_userrequesteddoc_file"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='docxtemplate',
-            name='name',
+            model_name="docxtemplate",
+            name="name",
             field=models.CharField(max_length=255, unique=True),
         ),
     ]

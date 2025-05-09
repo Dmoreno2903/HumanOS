@@ -10,13 +10,15 @@ from .models import Company, Person, PersonCompany, Role, VacationRequest
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ("name", "display_logo", "city")
     search_fields = ("name", "address", "city")
-    
+
     def display_logo(self, obj):
         if obj.logo:
-            return mark_safe(f'<a href="{obj.logo.url}" target="_blank"><img src="{obj.logo.url}" style="width: 50px; height: 50px;" /></a>')
+            return mark_safe(
+                f'<a href="{obj.logo.url}" target="_blank"><img src="{obj.logo.url}" style="width: 50px; height: 50px;" /></a>'
+            )
         return "-"
-    
-    display_logo.short_description = 'Logo'
+
+    display_logo.short_description = "Logo"
 
 
 # Registrando el modelo Person
@@ -53,7 +55,15 @@ class RoleAdmin(admin.ModelAdmin):
 # Registrando el modelo PersonCompany
 @admin.register(PersonCompany)
 class PersonCompanyAdmin(admin.ModelAdmin):
-    list_display = ("person", "company", "role", "leader", "start_date", "end_date", "status")
+    list_display = (
+        "person",
+        "company",
+        "role",
+        "leader",
+        "start_date",
+        "end_date",
+        "status",
+    )
     list_filter = ("status", "role", "company")
     search_fields = ("person__first_name", "person__last_name", "company__name")
     autocomplete_fields = ("person", "company", "role")

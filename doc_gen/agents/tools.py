@@ -126,25 +126,25 @@ def generate_laboral_letter(user: people_models.Person):
     )
 
     renderer.render()
-    
+
     try:
         # Importar para gestión de archivos
         from django.core.files import File
         import os
-        
+
         # Crear un archivo temporal como objeto File de Django
-        with open(renderer.pdf_doc_path, 'rb') as pdf_file:
+        with open(renderer.pdf_doc_path, "rb") as pdf_file:
             # Crear el objeto UserRequestedDoc y asociar el archivo
             laboral_letter_obj = doc_gen_models.UserRequestedDoc(
                 user=user,
                 doc_type=doc_gen_models.UserRequestedDoc.DocType.LABORAL_LETTER,
                 expire_at=timezone.now() + timezone.timedelta(days=30),
             )
-            
+
             # Guardar el archivo en el campo 'file'
             filename = os.path.basename(renderer.pdf_doc_path)
             laboral_letter_obj.file.save(filename, File(pdf_file), save=True)
-        
+
         # Enviamos el documento al usuario
         whatsapp.send_message(
             user.phone,

@@ -14,6 +14,7 @@ DEFAULT_ERROR_RESPONSE = {
     "help_message": "Tenemos un problema y no podemos ayudarte en este momento. Por favor, intenta más tarde.",
 }
 
+
 def process_whatsapp_message_for_intents(message: str) -> dict:
     response = client.models.generate_content(
         model="gemini-2.0-flash",

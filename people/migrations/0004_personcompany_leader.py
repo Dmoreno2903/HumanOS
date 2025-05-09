@@ -6,15 +6,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('people', '0003_vacationrequest_days'),
+        ("people", "0003_vacationrequest_days"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='personcompany',
-            name='leader',
-            field=models.ForeignKey(blank=True, help_text='Select the leader', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='leaders', to=settings.AUTH_USER_MODEL, verbose_name='Leader'),
+            model_name="personcompany",
+            name="leader",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Select the leader",
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="leaders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Leader",
+            ),
         ),
     ]

@@ -1,4 +1,3 @@
-
 WHATSAPP_INTENTS_CONTEXT = """
 Deberas leer mensajes de un usuario y determinar si tiene alguna de las intenciones descritas abajo. Luego deberas determinar que documento quiere generar de la lista dada o que consulta quiere hacer. Debes responder en formato JSON con la siguiente estructura:
 

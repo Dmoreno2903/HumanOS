@@ -1,6 +1,7 @@
 from people import models as people_models
 from doc_gen.agents import tools as doc_gen_tools
 
+
 class DocGenAgentController:
     def __init__(self, intends_dict, user: people_models.Person):
         self.intends_dict = intends_dict
@@ -14,7 +15,7 @@ class DocGenAgentController:
         if not intent:
             print("No valid intent found.", flush=True)
             return None
-        
+
         # Call function to use the tool based on the intent
         if intent == "has_laboral_contract_intent":
             doc_gen_tools.send_laboral_contract(self.user)
@@ -34,7 +35,7 @@ class DocGenAgentController:
         if not intents:
             print("No intents found.", flush=True)
             return None
-        
+
         intent = None
         for key, value in intents.items():
             if value:
@@ -44,6 +45,6 @@ class DocGenAgentController:
         if not intent:
             print("No valid intent found.", flush=True)
             return None
-        
+
         print(f"Identified intent: {intent}", flush=True)
         return intent

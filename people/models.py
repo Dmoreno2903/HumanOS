@@ -115,20 +115,20 @@ class Person(AbstractUser, TimeStampedModel):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_person_company(self) -> 'PersonCompany':
+    def get_person_company(self) -> "PersonCompany":
         """Get the last company in which the person worked."""
         try:
             return self.companies.order_by("-created").first()
         except Exception:
             return None
 
-    def get_company(self) -> 'Company':
+    def get_company(self) -> "Company":
         """Get the last company in which the person worked."""
         person_company: PersonCompany = self.get_person_company()
         if person_company:
             return person_company.company
         return None
-        
+
     def get_available_vacation_days(self):
         """
         Calculate the available vacation days for the person in the company.
@@ -148,9 +148,12 @@ class Person(AbstractUser, TimeStampedModel):
         available_vacation_days = days_worked * standard_vacation_days // 360
 
         # Get used vacation days
-        used_vacation_days = self.vacation_requests.filter(
-            status=VacationRequest.Status.APPROVED,
-        ).aggregate(models.Sum("days"))["days__sum"] or 0
+        used_vacation_days = (
+            self.vacation_requests.filter(
+                status=VacationRequest.Status.APPROVED,
+            ).aggregate(models.Sum("days"))["days__sum"]
+            or 0
+        )
 
         return available_vacation_days - used_vacation_days
 
@@ -253,9 +256,7 @@ class VacationRequest(TimeStampedModel):
     start_date = models.DateField(
         verbose_name="Start Date", help_text="Enter the start date"
     )
-    end_date = models.DateField(
-        verbose_name="End Date", help_text="Enter the end date"
-    )
+    end_date = models.DateField(verbose_name="End Date", help_text="Enter the end date")
     days = models.IntegerField(
         blank=True,
         null=True,

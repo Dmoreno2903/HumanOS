@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('people', '0002_vacationrequest'),
+        ("people", "0002_vacationrequest"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vacationrequest',
-            name='days',
-            field=models.IntegerField(blank=True, help_text='Enter the number of days', null=True, verbose_name='Days'),
+            model_name="vacationrequest",
+            name="days",
+            field=models.IntegerField(
+                blank=True,
+                help_text="Enter the number of days",
+                null=True,
+                verbose_name="Days",
+            ),
         ),
     ]
