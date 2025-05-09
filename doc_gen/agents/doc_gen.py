@@ -19,7 +19,7 @@ class DocGenAgentController:
         if intent == "has_laboral_contract_intent":
             doc_gen_tools.send_laboral_contract(self.user)
         elif intent == "has_laboral_letter_intent":
-            print("Using labor letter tool...", flush=True)
+            doc_gen_tools.generate_laboral_letter(self.user)
         elif intent == "has_vacation_query_intend":
             doc_gen_tools.send_available_vacation_days(self.user)
         else:

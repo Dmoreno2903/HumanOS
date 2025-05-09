@@ -9,7 +9,7 @@ class DocxTemplate(ext_models.TimeStampedModel):
     Model to store the docx template.
     """
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     file = models.FileField(upload_to="docx_templates/")
 
     version = models.CharField(max_length=10, default="1.0")

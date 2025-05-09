@@ -115,14 +115,14 @@ class Person(AbstractUser, TimeStampedModel):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_person_company(self):
+    def get_person_company(self) -> 'PersonCompany':
         """Get the last company in which the person worked."""
         try:
             return self.companies.order_by("-created").first()
         except Exception:
             return None
 
-    def get_company(self):
+    def get_company(self) -> 'Company':
         """Get the last company in which the person worked."""
         person_company: PersonCompany = self.get_person_company()
         if person_company:
@@ -183,6 +183,23 @@ class PersonCompany(TimeStampedModel):
         related_name="companies",
         verbose_name="Person",
         help_text="Select the person",
+    )
+    salary = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="Salary",
+        help_text="Enter the salary",
+    )
+    leader = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="leaders",
+        verbose_name="Leader",
+        help_text="Select the leader",
     )
     company = models.ForeignKey(
         Company,
