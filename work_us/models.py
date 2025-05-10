@@ -39,8 +39,47 @@ class WorkUsModel(TimeStampedModel):
         help_text="Requirements of the vacancy",
     )
 
+    class Meta:
+        verbose_name = "Vacante"
+        verbose_name_plural = "Vacantes"
+
     def __str__(self):
         return self.name
+
+
+class BackgroundPersonModel(TimeStampedModel):
+    """
+    Background person model for WorkUs
+    List all the background persons for WorkUs
+    """
+
+    class OrganizationType(models.TextChoices):
+        ATTORNEY = "Attorney", "Procuraduria General de la Nación"
+
+    candidate = models.ForeignKey(
+        "CandidateModel",
+        on_delete=models.DO_NOTHING,
+        verbose_name="Candidate",
+        help_text="Candidate that has the background",
+    )
+    organization = models.CharField(
+        max_length=255,
+        choices=OrganizationType.choices,
+        verbose_name="Organization of the background",
+        help_text="Organization of the background",
+    )
+
+    query = models.TextField(
+        verbose_name="Description of the background",
+        help_text="Description of the background",
+    )
+
+    class Meta:
+        verbose_name = "Antecedente"
+        verbose_name_plural = "Antedecentes"
+
+    def __str__(self):
+        return f"{self.candidate.name} - {self.organization}"
 
 
 class CandidateModel(TimeStampedModel):
@@ -49,6 +88,11 @@ class CandidateModel(TimeStampedModel):
     List all the candidates for WorkUs
     """
 
+    number_id = models.CharField(
+        max_length=255,
+        verbose_name="Number ID of the candidate",
+        help_text="Number ID of the candidate",
+    )
     name = models.CharField(
         max_length=255,
         verbose_name="Name of the candidate",
@@ -90,6 +134,10 @@ class CandidateModel(TimeStampedModel):
         verbose_name="Comments of the candidate",
         help_text="Comments of the candidate",
     )
+
+    class Meta:
+        verbose_name = "Candidato"
+        verbose_name_plural = "Candidatos"
 
     def __str__(self):
         return self.name

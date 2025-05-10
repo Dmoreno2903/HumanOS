@@ -15,5 +15,8 @@ COPY pyproject.toml .
 # Instala dependencias
 RUN uv pip install -r pyproject.toml --system
 
+# Dependencias de playwright requeridas
+RUN playwright install --with-deps
+
 # Copia el resto del código
 COPY . .

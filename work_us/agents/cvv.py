@@ -1,7 +1,6 @@
 import re
 import os
-
-# import fitz
+import pymupdf
 import mammoth
 import json
 import google.generativeai as genai
@@ -20,16 +19,13 @@ class ExtractInfoCVVAgent:
 
     file_path: str = Field(..., description="Path to the CVV document")
     description_work: str = Field(..., description="Description of the work")
-    content: Optional[str] = Field(
-        default=None, description="Extracted text from the document"
-    )
+    result: Optional[str] = Field(default=None, description="Result of the AI analysis")
 
     def __post_init__(self):
         """Initialize the agent and extract text from the document."""
         if not os.path.exists(self.file_path):
             raise FileNotFoundError(f"File not found: {self.file_path}")
-
-        self.content = self.extract_text(self.file_path)
+        self.result = self.llm_analysis()
 
     def extract_text(self, file_path: str) -> str:
         """Extract text from the document.
@@ -41,16 +37,16 @@ class ExtractInfoCVVAgent:
 
         # Check if the file is a PDF or DOCX
         # TODO: Add support for other file types if needed
-        # if ext == ".pdf":
-        #     doc = fitz.open(file_path)
-        #     return "\n".join([page.get_text() for page in doc])
-        # elif ext == ".docx":
-        #     doc = mammoth.convert_to_text(open(file_path, "rb"))
-        #     return doc.value
-        # else:
-        #     raise ValueError(
-        #         f"Unsupported file type: {ext}. Supported types are: .pdf, .docx"
-        #     )
+        if ext == ".pdf":
+            doc = pymupdf.open(file_path)
+            return "\n".join([page.get_text() for page in doc])
+        elif ext == ".docx":
+            doc = mammoth.convert_to_text(open(file_path, "rb"))
+            return doc.value
+        else:
+            raise ValueError(
+                f"Unsupported file type: {ext}. Supported types are: .pdf, .docx"
+            )
 
     def check_response(self, response_text: str) -> dict:
         """Check if the response is a valid JSON object with required fields.
@@ -66,7 +62,6 @@ class ExtractInfoCVVAgent:
             "name",
             "phone",
             "email",
-            "id",
             "resume",
             "stars",
             "comments",
@@ -83,7 +78,8 @@ class ExtractInfoCVVAgent:
 
     def llm_analysis(self) -> str:
         """Analyze the extracted text using the Generative AI"""
-        if not self.content:
+        content = self.extract_text(self.file_path)
+        if not content:
             raise ValueError(
                 "No content to analyze. Please extract text from a document first."
             )
@@ -100,7 +96,6 @@ class ExtractInfoCVVAgent:
             "name": "nombre del candidato",
             "phone": "número de teléfono",
             "email": "correo electrónico",
-            "id": "número de cédula",
             "resume": "experiencia laboral",
             "stars": "número de estrellas (1-5)",
             "comments": "comentarios sobre el candidato"
@@ -113,7 +108,7 @@ class ExtractInfoCVVAgent:
             - La respuesta debe estar en formato JSON válido.
 
             Texto a analizar:
-            {self.content}
+            {content}
         """
 
         genai.configure(api_key=settings.GOOGLE_API_KEY)

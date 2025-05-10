@@ -25,3 +25,16 @@ class CandidateAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "phone")
     search_fields = ("name", "email", "phone")
     list_per_page = 10
+
+
+@admin.register(wk_models.BackgroundPersonModel)
+class BackgroundPersonAdmin(admin.ModelAdmin):
+    """
+    Admin panel for BackgroundPerson
+    List all the background persons for WorkUs
+    """
+
+    list_display = ("candidate", "organization", "created")
+    search_fields = ("candidate__name", "organization")
+    list_filter = ("organization",)
+    list_per_page = 10
