@@ -92,4 +92,5 @@ class WhatsAppWebhookSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
-        return self.controller.say_hello()
+        self.controller.respond_to_message()
+        return validated_data

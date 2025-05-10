@@ -11,6 +11,8 @@ class WebhookViewSet(views.APIView):
     """
 
     serializer_class = whatsapp_serializers.WhatsAppWebhookSerializer
+    permission_classes = []
+    authentication_classes = []
 
     def get(self, request):
         """This method is used to verify the webhook from the Meta App config"""
@@ -31,6 +33,10 @@ class WebhookViewSet(views.APIView):
                 {"error": serializer.errors, "status": status.HTTP_200_OK}
             )
 
-        serializer.save()
+        try:
+            serializer.save()
+        except Exception as e:
+            print(f"Error processing WhatsApp message: {e}")
+            return response.Response({"error": str(e), "status": status.HTTP_200_OK})
 
         return response.Response(status=status.HTTP_200_OK)
