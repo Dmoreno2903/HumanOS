@@ -24,6 +24,8 @@ class CandidateSerializer(serializers.ModelSerializer):
     List all the candidates for WorkUs
     """
 
+    backgrounds = serializers.SerializerMethodField()
+
     class Meta:
         model = wk_models.CandidateModel
         fields = "__all__"
@@ -33,6 +35,26 @@ class CandidateSerializer(serializers.ModelSerializer):
             "email": {"required": False},
             "phone": {"required": False},
         }
+
+    def get_fields(self):
+        fields = super().get_fields()
+        if self.context.get("view").action == "list":
+            exclude = ["backgrounds", "cvv", "resume", "comments"]
+            for field_name in exclude:
+                fields.pop(field_name, None)
+        return fields
+
+    def get_backgrounds(self, obj):
+        """Get the backgrounds of the candidate
+        This method is used to get the backgrounds of the candidate
+        """
+        return [
+            {
+                "organization": background.get_organization_display(),
+                "query": background.query,
+            }
+            for background in obj.backgrounds.all()
+        ]
 
     def validate_cvv(self, value):
         """Validate the CVV file

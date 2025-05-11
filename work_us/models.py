@@ -61,6 +61,7 @@ class BackgroundPersonModel(TimeStampedModel):
         on_delete=models.DO_NOTHING,
         verbose_name="Candidate",
         help_text="Candidate that has the background",
+        related_name="backgrounds",
     )
     organization = models.CharField(
         max_length=255,
