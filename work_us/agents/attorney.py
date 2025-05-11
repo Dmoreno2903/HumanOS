@@ -102,11 +102,11 @@ class AttorneyOfficeAgent:
 
             # Get the captcha question
             captcha_text = await iframe.inner_text("#lblPregunta")
-            print(f"Captcha question: {captcha_text}", flush=True)
+            print(f"    🕵️‍♂️ Captcha question: {captcha_text}", flush=True)
             solve = await self.__captcha_solver(
                 iframe, captcha_text, candidate.number_id, candidate.name
             )
-            print(f"Captcha answer: {solve}", flush=True)
+            print(f"    🕵️‍♂️ Captcha answer: {solve}", flush=True)
 
             # Fill the captcha answer
             await self.__typing_captcha(iframe, solve)
@@ -120,7 +120,7 @@ class AttorneyOfficeAgent:
             result = await self.__process_content(
                 content, candidate.number_id, candidate.name
             )
-            print(f"Result of the query: {result}", flush=True)
+            print(f"🕵️‍♂️ Result of the query: {result}", flush=True)
 
             # Create the background in the database
             await self.save_background(candidate=candidate, result=result)

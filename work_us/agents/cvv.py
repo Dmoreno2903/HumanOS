@@ -79,6 +79,7 @@ class ExtractInfoCVVAgent:
     def llm_analysis(self) -> str:
         """Analyze the extracted text using the Generative AI"""
         content = self.extract_text(self.file_path)
+        print(f"    🕵️‍♂️ Extracted content: {content}", flush=True)
         if not content:
             raise ValueError(
                 "No content to analyze. Please extract text from a document first."

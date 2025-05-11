@@ -78,20 +78,24 @@ class CandidateSerializer(serializers.ModelSerializer):
         file_path: str = wk_utils.save_file_to_temp_storage(file=validated_data["cvv"])
         description_work: str = getattr(validated_data.get("vacancy"), "description")
 
+        print("\n🚨 A request received", flush=True)
+        print(f"    ▻ File path: {file_path}", flush=True)
+        print(f"    ▻ Description work: {description_work}", flush=True)
+
         try:
             agent = wk_agents.ExtractInfoCVVAgent(
                 file_path=file_path,
                 description_work=description_work,
             )
             result: dict = agent.result
-            print("Result of the AI agent:", result, flush=True)
+            print("🕵️‍♂️ Result of the AI agent:", result, flush=True)
 
             # Create the candidate with the extracted information
             validated_data.update(**result)
             candidate: wk_models.CandidateModel = super().create(
                 validated_data=validated_data
             )
-            print("Candidate created:", candidate, flush=True)
+            print("◎ Candidate created:", candidate, flush=True)
         except Exception as e:
             raise serializers.ValidationError(
                 "Error in AI agent: {}".format(str(e))
