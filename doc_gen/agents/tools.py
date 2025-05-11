@@ -15,9 +15,7 @@ def send_laboral_contract(user: people_models.Person):
 
     try:
         laboral_contract_obj = doc_gen_models.UserRequestedDoc.objects.get(
-            user=user,
-            doc_type=doc_gen_models.UserRequestedDoc.DocType.LABORAL_CONTRACT,
-            expire_at__gt=timezone.now(),
+            user=user, doc_type=doc_gen_models.UserRequestedDoc.DocType.LABORAL_CONTRACT
         )
 
         whatsapp.send_message(
