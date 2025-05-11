@@ -27,6 +27,9 @@ class CandidateViewSet(viewsets.ModelViewSet):
     queryset = wk_models.CandidateModel.objects.all()
     serializer_class = wk_serializers.CandidateSerializer
 
+    permission_classes = []
+    authentication_classes = []
+
     def get_queryset(self):
         """Override the get_queryset method to filter by company"""
         return wk_qs.candidates_queryset(request=self.request)
