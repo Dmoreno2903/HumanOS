@@ -10,6 +10,8 @@ class WorkUsViewSet(viewsets.ModelViewSet):
     List all the vacancies and candidates for WorkUs
     """
 
+    permission_classes = []
+    authentication_classes = []
     queryset = wk_models.WorkUsModel.objects.all()
     serializer_class = wk_serializers.WorkUsSerializer
 
@@ -24,6 +26,8 @@ class CandidateViewSet(viewsets.ModelViewSet):
     List all the candidates for WorkUs
     """
 
+    permission_classes = []
+    authentication_classes = []
     queryset = wk_models.CandidateModel.objects.all()
     serializer_class = wk_serializers.CandidateSerializer
 

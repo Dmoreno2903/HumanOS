@@ -117,6 +117,7 @@ class CandidateModel(TimeStampedModel):
         on_delete=models.DO_NOTHING,
         verbose_name="Vacancy",
         help_text="Vacancy that the candidate applied for",
+        related_name="candidates",
     )
     cvv = models.FileField(
         upload_to="cvv/",

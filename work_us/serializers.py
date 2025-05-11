@@ -10,6 +10,8 @@ class WorkUsSerializer(serializers.ModelSerializer):
     List all the vacancies and candidates for WorkUs
     """
 
+    candidates_count = serializers.IntegerField()
+
     class Meta:
         model = wk_models.WorkUsModel
         fields = "__all__"

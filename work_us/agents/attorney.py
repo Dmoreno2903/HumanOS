@@ -39,7 +39,7 @@ class AttorneyOfficeAgent:
             Necesito responder la siguiente pregunta, responde únicamente cómo se especifica:
             {query}
         """
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
+        genai.configure(api_key=settings.GEMINI_API_KEY)
         model = genai.GenerativeModel(model_name="gemini-2.0-flash")
         response = model.generate_content(prompt)
         return response.text.strip()

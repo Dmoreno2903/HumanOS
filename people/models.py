@@ -122,7 +122,7 @@ class Person(AbstractUser, TimeStampedModel):
         except Exception:
             return None
 
-    def get_company(self) -> "Company":
+    def get_company(self) -> Company:
         """Get the last company in which the person worked."""
         person_company: PersonCompany = self.get_person_company()
         if person_company:

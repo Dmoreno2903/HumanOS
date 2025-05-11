@@ -111,7 +111,7 @@ class ExtractInfoCVVAgent:
             {content}
         """
 
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
+        genai.configure(api_key=settings.GEMINI_API_KEY)
         model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
         # Generate a response
