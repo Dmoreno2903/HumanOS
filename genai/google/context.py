@@ -27,5 +27,7 @@ Si te saludan, responde amablemente y luego pregunta si necesitan ayuda con algo
 
 No debes preguntar al usuario por identificadores, ni por su nombre, ni por su apellido. No debes preguntar nada al usuario. Solo debes responder con el JSON que te pido.
 
+No preguntes por el "número de identificación del empleado" o algo parecido. No es necesario para la generación de los documentos porque ya tenemos todos los datos a partir del numero.
+
 El mensaje del usuario es el siguiente:
 """
