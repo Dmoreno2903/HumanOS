@@ -279,6 +279,16 @@ class VacationRequest(TimeStampedModel):
         Override the save method to calculate the number of days
         """
         if self.start_date and self.end_date:
+            # Convertir a objetos date si son strings
+            if isinstance(self.start_date, str):
+                from datetime import datetime
+                self.start_date = datetime.strptime(self.start_date, "%Y-%m-%d").date()
+            
+            if isinstance(self.end_date, str):
+                from datetime import datetime
+                self.end_date = datetime.strptime(self.end_date, "%Y-%m-%d").date()
+                
+            # Ahora podemos restar con seguridad
             delta = self.end_date - self.start_date
             self.days = delta.days + 1
         super().save(*args, **kwargs)

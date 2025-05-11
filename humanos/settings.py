@@ -82,6 +82,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "humanos.urls"
@@ -219,6 +220,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GOOGLE_API_KEY  = os.environ.get("GOOGLE_API_KEY")
 
 WHATSAPP_VERIFY_TOKEN = os.environ.get("WHATSAPP_VERIFY_TOKEN")
 WHATSAPP_API_TOKEN = os.environ.get("WHATSAPP_API_TOKEN")
