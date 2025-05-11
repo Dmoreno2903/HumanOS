@@ -38,12 +38,12 @@ def candidates_queryset(request: HttpRequest) -> QuerySet:
         return (
             wk_models.CandidateModel.objects.filter(**filters)
             .distinct()
-            .order_by("stars")
+            .order_by("-stars")
         )
 
     filters["vacancy__company"] = company
     return (
-        wk_models.CandidateModel.objects.filter(**filters).distinct().order_by("stars")
+        wk_models.CandidateModel.objects.filter(**filters).distinct().order_by("-stars")
     )
 
 
