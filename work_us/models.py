@@ -29,7 +29,7 @@ class WorkUsModel(TimeStampedModel):
     )
     company = models.ForeignKey(
         pple_models.Company,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         verbose_name="Company",
         help_text="Company that offers the vacancy",
     )
