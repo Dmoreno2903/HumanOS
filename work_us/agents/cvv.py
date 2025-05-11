@@ -60,8 +60,6 @@ class ExtractInfoCVVAgent:
         # Check for required fields
         required_fields = [
             "name",
-            "phone",
-            "email",
             "resume",
             "stars",
             "comments",

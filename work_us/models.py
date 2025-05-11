@@ -100,12 +100,17 @@ class CandidateModel(TimeStampedModel):
         help_text="Name of the candidate",
     )
     email = models.EmailField(
-        verbose_name="Email of the candidate", help_text="Email of the candidate"
+        verbose_name="Email of the candidate",
+        help_text="Email of the candidate",
+        null=True,
+        blank=True,
     )
     phone = models.CharField(
         max_length=255,
         verbose_name="Phone of the candidate",
         help_text="Phone of the candidate",
+        null=True,
+        blank=True,
     )
     resume = models.TextField(
         blank=True,
